@@ -1,16 +1,34 @@
 (function () {
+  var attempts = 0;
+  var maxAttempts = 20;
+  var retryDelay = 300;
+  var hasStarted = false;
+
   function initOlaSpinHero() {
     var hero = document.getElementById('olaSpinHero');
     var frame = document.getElementById('olaSpinHeroFrame');
     var wheel = document.getElementById('olaSpinHeroWheel');
     var badge = document.getElementById('olaSpinHeroBadge');
-    var prizeName = document.getElementById('olaSpinHeroPrizeName');
+    var title = document.getElementById('olaSpinHeroTitle');
     var text = document.getElementById('olaSpinHeroText');
-    var button = document.getElementById('olaSpinHeroButton');
+    var startButton = document.getElementById('olaSpinHeroStartButton');
+    var resultButton = document.getElementById('olaSpinHeroButton');
+    var voucherWrap = document.getElementById('olaSpinHeroVoucherWrap');
     var voucherCodeBox = document.getElementById('olaSpinHeroVoucherCode');
     var confettiLayer = document.getElementById('olaSpinHeroConfetti');
 
-    if (!hero || !frame || !wheel) return;
+    if (!hero || !frame || !wheel || !badge || !title || !text || !startButton || !resultButton || !voucherWrap || !voucherCodeBox) {
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(initOlaSpinHero, retryDelay);
+      }
+      return;
+    }
+
+    if (hero.getAttribute('data-spinhero-initialized') === 'true') {
+      return;
+    }
+    hero.setAttribute('data-spinhero-initialized', 'true');
 
     function createConfetti() {
       if (!confettiLayer) return;
@@ -52,7 +70,7 @@
       return code.split('-')[0];
     }
 
-    var voucherCodeRaw = voucherCodeBox ? voucherCodeBox.textContent : '';
+    var voucherCodeRaw = voucherCodeBox.textContent || '';
     var voucherCode = cleanVoucherCode(voucherCodeRaw);
     var prefix = getVoucherPrefix(voucherCode);
 
@@ -60,6 +78,7 @@
       brons: {
         prize: 'brons',
         badge: 'Jij hebt brons gewonnen',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>brons</span> gewonnen',
         text: 'Jouw voucher hoort bij de categorie Brons.',
         buttonText: 'Ga naar de voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
@@ -70,8 +89,9 @@
       goud: {
         prize: 'goud',
         badge: 'Jij hebt goud gewonnen',
-        text: 'Gefeliciteerd! Jouw voucher hoort bij de categorie Goud.',
-        buttonText: 'Bekijk jouw prijs',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>goud</span> gewonnen',
+        text: 'Jouw voucher hoort bij de categorie Goud.',
+        buttonText: 'Ga naar de voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
         rotation: -90,
         frameBg: '#d4af37',
@@ -80,8 +100,9 @@
       zilver: {
         prize: 'zilver',
         badge: 'Jij hebt zilver gewonnen',
-        text: 'Mooi! Jouw voucher hoort bij de categorie Zilver.',
-        buttonText: 'Bekijk jouw prijs',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>zilver</span> gewonnen',
+        text: 'Jouw voucher hoort bij de categorie Zilver.',
+        buttonText: 'Ga naar de voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
         rotation: -270,
         frameBg: '#bfc7ce',
@@ -90,8 +111,9 @@
       platinum: {
         prize: 'platinum',
         badge: 'Jij hebt platinum gewonnen',
-        text: 'Wauw! Jouw voucher hoort bij de categorie Platinum.',
-        buttonText: 'Bekijk jouw prijs',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>platinum</span> gewonnen',
+        text: 'Jouw voucher hoort bij de categorie Platinum.',
+        buttonText: 'Ga naar de voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
         rotation: -180,
         frameBg: '#7e8a97',
@@ -111,41 +133,44 @@
       current = states.brons;
     }
 
-    if (badge) badge.textContent = current.badge;
-    if (prizeName) prizeName.textContent = current.prize;
-    if (text) text.textContent = current.text;
+    startButton.addEventListener('click', function () {
+      if (hasStarted) return;
+      hasStarted = true;
 
-    if (button) {
-      button.textContent = current.buttonText;
-      button.href = current.buttonUrl;
-    }
+      startButton.disabled = true;
+      startButton.textContent = 'Het rad draait...';
 
-    if (voucherCodeBox) {
-      voucherCodeBox.textContent = voucherCode ? voucherCode : 'Geen code gevonden';
-    }
-
-    var spinDuration = 4200;
-    var isMobile = window.innerWidth <= 920;
-    var rotationOffset = isMobile ? 90 : 0;
-
-    setTimeout(function () {
+      var spinDuration = 4200;
+      var isMobile = window.innerWidth <= 920;
+      var rotationOffset = isMobile ? 90 : 0;
       var finalRotation = (360 * 3) + current.rotation + rotationOffset;
-      wheel.style.setProperty('--ola-spinhero-wheel-rotation', finalRotation + 'deg');
-    }, 150);
 
-    setTimeout(function () {
-      frame.style.setProperty('--ola-spinhero-frame-bg', current.frameBg);
+      setTimeout(function () {
+        wheel.style.setProperty('--ola-spinhero-wheel-rotation', finalRotation + 'deg');
+      }, 100);
 
-      if (current.confetti && hero) {
-        hero.classList.add('ola-spinhero--confetti');
-        createConfetti();
-      }
-    }, 150 + spinDuration);
+      setTimeout(function () {
+        frame.style.setProperty('--ola-spinhero-frame-bg', current.frameBg);
+        badge.textContent = current.badge;
+        title.innerHTML = current.title;
+        text.textContent = current.text;
+
+        voucherCodeBox.textContent = voucherCode ? voucherCode : 'Geen code gevonden';
+        voucherWrap.classList.remove('ola-spinhero__voucher-box--hidden');
+
+        resultButton.textContent = current.buttonText;
+        resultButton.href = current.buttonUrl;
+        resultButton.classList.remove('ola-spinhero__button--hidden');
+
+        startButton.classList.add('ola-spinhero__button--hidden');
+
+        if (current.confetti) {
+          hero.classList.add('ola-spinhero--confetti');
+          createConfetti();
+        }
+      }, 100 + spinDuration);
+    });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initOlaSpinHero);
-  } else {
-    initOlaSpinHero();
-  }
+  initOlaSpinHero();
 })();

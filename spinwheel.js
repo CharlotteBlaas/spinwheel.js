@@ -1,3 +1,4 @@
+<script>
 (function () {
   var attempts = 0;
   var maxAttempts = 20;
@@ -6,7 +7,6 @@
 
   function initOlaSpinHero() {
     var hero = document.getElementById('olaSpinHero');
-    var frame = document.getElementById('olaSpinHeroFrame');
     var wheel = document.getElementById('olaSpinHeroWheel');
     var badge = document.getElementById('olaSpinHeroBadge');
     var title = document.getElementById('olaSpinHeroTitle');
@@ -16,8 +16,9 @@
     var voucherWrap = document.getElementById('olaSpinHeroVoucherWrap');
     var voucherCodeBox = document.getElementById('olaSpinHeroVoucherCode');
     var confettiLayer = document.getElementById('olaSpinHeroConfetti');
+    var prizeValueBox = document.getElementById('olaSpinHeroPrizeValue');
 
-    if (!hero || !frame || !wheel || !badge || !title || !text || !startButton || !resultButton || !voucherWrap || !voucherCodeBox) {
+    if (!hero || !wheel || !badge || !title || !text || !startButton || !resultButton || !voucherWrap || !voucherCodeBox || !prizeValueBox || !confettiLayer) {
       attempts++;
       if (attempts < maxAttempts) {
         setTimeout(initOlaSpinHero, retryDelay);
@@ -31,11 +32,10 @@
     hero.setAttribute('data-spinhero-initialized', 'true');
 
     function createConfetti() {
-      if (!confettiLayer) return;
       confettiLayer.innerHTML = '';
 
-      var colors = ['#ffffff', '#d4af37', '#7e8a97', '#bfc7ce', '#a97142', '#FFE680'];
-      var pieces = 130;
+      var colors = ['#f58220', '#d62828', '#ffffff', '#1d4ed8'];
+      var pieces = 140;
 
       for (var i = 0; i < pieces; i++) {
         var piece = document.createElement('span');
@@ -63,75 +63,60 @@
     }
 
     function cleanVoucherCode(value) {
-      return (value || '').replace(/\s+/g, '').toUpperCase();
+      return (value || '').trim();
     }
 
-    function getVoucherPrefix(code) {
-      return code.split('-')[0];
+    function cleanPrizeValue(value) {
+      var parsed = parseInt((value || '').replace(/[^\d-]/g, ''), 10);
+      return isNaN(parsed) ? 0 : parsed;
     }
 
     var voucherCodeRaw = voucherCodeBox.textContent || '';
     var voucherCode = cleanVoucherCode(voucherCodeRaw);
-    var prefix = getVoucherPrefix(voucherCode);
+
+    var prizeValueRaw = prizeValueBox.textContent || '';
+    var prizeValue = cleanPrizeValue(prizeValueRaw);
 
     var states = {
-      brons: {
-        prize: 'brons',
-        badge: 'Jij hebt brons gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>brons</span> gewonnen',
-        text: 'Jouw voucher hoort bij de categorie Brons.',
-        buttonText: 'Ga naar de voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
-        rotation: 0,
-        frameBg: '#a97142',
-        confetti: false
-      },
-      goud: {
-        prize: 'goud',
-        badge: 'Jij hebt goud gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>goud</span> gewonnen',
-        text: 'Jouw voucher hoort bij de categorie Goud.',
-        buttonText: 'Ga naar de voordeelshop',
+      0: {
+        badge: 'Helaas, geen prijs',
+        title: 'Deze keer <br> helaas <span>geen prijs</span>',
+        text: 'Je hebt deze ronde geen Club Lions punten gewonnen, maar leuk dat je hebt meegedaan aan de STG Koningsdagactie.',
+        buttonText: 'Bekijk de STG voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
         rotation: -90,
-        frameBg: '#d4af37',
-        confetti: true
+        confetti: false
       },
-      zilver: {
-        prize: 'zilver',
-        badge: 'Jij hebt zilver gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>zilver</span> gewonnen',
-        text: 'Jouw voucher hoort bij de categorie Zilver.',
-        buttonText: 'Ga naar de voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
-        rotation: -270,
-        frameBg: '#bfc7ce',
-        confetti: true
-      },
-      platinum: {
-        prize: 'platinum',
-        badge: 'Jij hebt platinum gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>platinum</span> gewonnen',
-        text: 'Jouw voucher hoort bij de categorie Platinum.',
-        buttonText: 'Ga naar de voordeelshop',
+      10: {
+        badge: 'Yes, je hebt gewonnen',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>10 Club Lions punten</span> gewonnen',
+        text: 'Goed nieuws: je hebt 10 Club Lions punten gewonnen in de STG Koningsdagactie.',
+        buttonText: 'Ga naar de STG voordeelshop',
         buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
         rotation: -180,
-        frameBg: '#7e8a97',
+        confetti: true
+      },
+      50: {
+        badge: 'Yes, je hebt gewonnen',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>50 Club Lions punten</span> gewonnen',
+        text: 'Top! Je hebt 50 Club Lions punten gewonnen in de STG Koningsdagactie.',
+        buttonText: 'Ga naar de STG voordeelshop',
+        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        rotation: -270,
+        confetti: true
+      },
+      100: {
+        badge: 'Geweldig, hoofdprijs',
+        title: 'Gefeliciteerd!<br>Jij hebt <span>100 Club Lions punten</span> gewonnen',
+        text: 'Fantastisch! Je hebt 100 Club Lions punten gewonnen in de STG Koningsdagactie.',
+        buttonText: 'Ga naar de STG voordeelshop',
+        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        rotation: 0,
         confetti: true
       }
     };
 
-    var current = states.brons;
-
-    if (prefix === 'TESTG') {
-      current = states.goud;
-    } else if (prefix === 'TESP') {
-      current = states.platinum;
-    } else if (prefix === 'TESTZ') {
-      current = states.zilver;
-    } else if (prefix === 'TESTB') {
-      current = states.brons;
-    }
+    var current = states[prizeValue] || states[0];
 
     startButton.addEventListener('click', function () {
       if (hasStarted) return;
@@ -139,6 +124,9 @@
 
       startButton.disabled = true;
       startButton.textContent = 'Het rad draait...';
+
+      hero.classList.remove('ola-spinhero--confetti');
+      confettiLayer.innerHTML = '';
 
       var spinDuration = 4200;
       var isMobile = window.innerWidth <= 920;
@@ -150,12 +138,11 @@
       }, 100);
 
       setTimeout(function () {
-        frame.style.setProperty('--ola-spinhero-frame-bg', current.frameBg);
         badge.textContent = current.badge;
         title.innerHTML = current.title;
         text.textContent = current.text;
 
-        voucherCodeBox.textContent = voucherCode ? voucherCode : 'Geen code gevonden';
+        voucherCodeBox.textContent = voucherCode || 'Geen code beschikbaar';
         voucherWrap.classList.remove('ola-spinhero__voucher-box--hidden');
 
         resultButton.textContent = current.buttonText;
@@ -174,3 +161,4 @@
 
   initOlaSpinHero();
 })();
+</script>

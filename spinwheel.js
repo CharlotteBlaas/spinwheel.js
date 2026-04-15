@@ -1,4 +1,3 @@
-<script>
 (function () {
   var attempts = 0;
   var maxAttempts = 20;
@@ -18,7 +17,19 @@
     var confettiLayer = document.getElementById('olaSpinHeroConfetti');
     var prizeValueBox = document.getElementById('olaSpinHeroPrizeValue');
 
-    if (!hero || !wheel || !badge || !title || !text || !startButton || !resultButton || !voucherWrap || !voucherCodeBox || !prizeValueBox || !confettiLayer) {
+    if (
+      !hero ||
+      !wheel ||
+      !badge ||
+      !title ||
+      !text ||
+      !startButton ||
+      !resultButton ||
+      !voucherWrap ||
+      !voucherCodeBox ||
+      !confettiLayer ||
+      !prizeValueBox
+    ) {
       attempts++;
       if (attempts < maxAttempts) {
         setTimeout(initOlaSpinHero, retryDelay);
@@ -29,6 +40,7 @@
     if (hero.getAttribute('data-spinhero-initialized') === 'true') {
       return;
     }
+
     hero.setAttribute('data-spinhero-initialized', 'true');
 
     function createConfetti() {
@@ -161,4 +173,3 @@
 
   initOlaSpinHero();
 })();
-</script>

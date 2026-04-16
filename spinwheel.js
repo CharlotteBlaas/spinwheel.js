@@ -18,17 +18,9 @@
     var prizeValueBox = document.getElementById('olaSpinHeroPrizeValue');
 
     if (
-      !hero ||
-      !wheel ||
-      !badge ||
-      !title ||
-      !text ||
-      !startButton ||
-      !resultButton ||
-      !voucherWrap ||
-      !voucherCodeBox ||
-      !confettiLayer ||
-      !prizeValueBox
+      !hero || !wheel || !badge || !title || !text ||
+      !startButton || !resultButton || !voucherWrap ||
+      !voucherCodeBox || !confettiLayer || !prizeValueBox
     ) {
       attempts++;
       if (attempts < maxAttempts) {
@@ -37,38 +29,24 @@
       return;
     }
 
-    if (hero.getAttribute('data-spinhero-initialized') === 'true') {
-      return;
-    }
-
+    if (hero.getAttribute('data-spinhero-initialized') === 'true') return;
     hero.setAttribute('data-spinhero-initialized', 'true');
 
     function createConfetti() {
       confettiLayer.innerHTML = '';
-
       var colors = ['#f58220', '#d62828', '#ffffff', '#1d4ed8'];
-      var pieces = 140;
 
-      for (var i = 0; i < pieces; i++) {
+      for (var i = 0; i < 140; i++) {
         var piece = document.createElement('span');
         piece.className = 'ola-spinhero__confetti-piece';
 
-        var left = Math.random() * 100;
-        var sizeW = 6 + Math.random() * 8;
-        var sizeH = 10 + Math.random() * 14;
-        var duration = 3.8 + Math.random() * 2.8;
-        var delay = Math.random() * 1.8;
-        var drift = (-120 + Math.random() * 240).toFixed(0) + 'px';
-        var rotate = (Math.random() * 50 - 25).toFixed(0) + 'deg';
-
-        piece.style.left = left + 'vw';
-        piece.style.width = sizeW + 'px';
-        piece.style.height = sizeH + 'px';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.width = (6 + Math.random() * 8) + 'px';
+        piece.style.height = (10 + Math.random() * 14) + 'px';
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = duration + 's';
-        piece.style.animationDelay = delay + 's';
-        piece.style.transform = 'rotate(' + rotate + ')';
-        piece.style.setProperty('--ola-confetti-x', drift);
+        piece.style.animationDuration = (3.8 + Math.random() * 2.8) + 's';
+        piece.style.animationDelay = (Math.random() * 1.8) + 's';
+        piece.style.setProperty('--ola-confetti-x', (-120 + Math.random() * 240) + 'px');
 
         confettiLayer.appendChild(piece);
       }
@@ -83,18 +61,16 @@
       return isNaN(parsed) ? 0 : parsed;
     }
 
-    var voucherCodeRaw = voucherCodeBox.textContent || '';
-    var voucherCode = cleanVoucherCode(voucherCodeRaw);
+    var voucherCode = cleanVoucherCode(voucherCodeBox.textContent);
+    var prizeValue = cleanPrizeValue(prizeValueBox.textContent);
 
-    var prizeValueRaw = prizeValueBox.textContent || '';
-    var prizeValue = cleanPrizeValue(prizeValueRaw);
-
+    // 🎯 ENIGE GELDIGE STATES
     var states = {
       0: {
         badge: 'Helaas, net mis!',
         title: 'Helaas, net mis!<br>Deze keer <span>geen Lion punten</span>.',
         text: 'Maar: Blijf Club Lions volgen, er komen snel weer nieuwe acties aan!',
-        buttonText: 'Blijf Club Lions volgen',
+        buttonText: 'Bekijk acties',
         buttonUrl: 'https://www.my-stglions.nl/',
         rotation: -90,
         confetti: false,
@@ -129,19 +105,10 @@
         rotation: -270,
         confetti: true,
         showVoucher: true
-      },
-      100: {
-        badge: 'Gefeliciteerd',
-        title: 'Gefeliciteerd<br>Je hebt <span>20 Lion punten</span> gewonnen!',
-        text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
-        buttonText: 'Voucher claimen',
-        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
-        rotation: 0,
-        confetti: true,
-        showVoucher: true
       }
     };
 
+    // ❗ fallback = geen prijs
     var current = states[prizeValue] || states[0];
 
     startButton.addEventListener('click', function () {
@@ -155,9 +122,7 @@
       confettiLayer.innerHTML = '';
 
       var spinDuration = 4200;
-      var isMobile = window.innerWidth <= 920;
-      var rotationOffset = isMobile ? 90 : 0;
-      var finalRotation = (360 * 3) + current.rotation + rotationOffset;
+      var finalRotation = (360 * 3) + current.rotation;
 
       setTimeout(function () {
         wheel.style.setProperty('--ola-spinhero-wheel-rotation', finalRotation + 'deg');
@@ -171,8 +136,6 @@
         if (current.showVoucher) {
           voucherCodeBox.textContent = voucherCode || 'Geen code beschikbaar';
           voucherWrap.classList.remove('ola-spinhero__voucher-box--hidden');
-        } else {
-          voucherWrap.classList.add('ola-spinhero__voucher-box--hidden');
         }
 
         resultButton.textContent = current.buttonText;

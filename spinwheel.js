@@ -91,40 +91,54 @@
 
     var states = {
       0: {
-        badge: 'Helaas, geen prijs',
-        title: 'Deze keer <br> helaas <span>geen prijs</span>',
-        text: 'Je hebt deze ronde geen Club Lions punten gewonnen, maar leuk dat je hebt meegedaan aan de STG Koningsdagactie.',
-        buttonText: 'Bekijk de STG voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        badge: 'Helaas, net mis!',
+        title: 'Helaas, net mis!<br>Deze keer <span>geen Lion punten</span>.',
+        text: 'Maar: Blijf Club Lions volgen, er komen snel weer nieuwe acties aan!',
+        buttonText: 'Blijf Club Lions volgen',
+        buttonUrl: 'https://www.my-stglions.nl/',
         rotation: -90,
-        confetti: false
+        confetti: false,
+        showVoucher: false
       },
       10: {
-        badge: 'Yes, je hebt gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>10 Club Lions punten</span> gewonnen',
-        text: 'Goed nieuws: je hebt 10 Club Lions punten gewonnen in de STG Koningsdagactie.',
-        buttonText: 'Ga naar de STG voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        badge: 'Gefeliciteerd',
+        title: 'Gefeliciteerd<br>Je hebt <span>10 Lion punten</span> gewonnen!',
+        text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
+        buttonText: 'Voucher claimen',
+        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
         rotation: -180,
-        confetti: true
+        confetti: true,
+        showVoucher: true
+      },
+      20: {
+        badge: 'Gefeliciteerd',
+        title: 'Gefeliciteerd<br>Je hebt <span>20 Lion punten</span> gewonnen!',
+        text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
+        buttonText: 'Voucher claimen',
+        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
+        rotation: 0,
+        confetti: true,
+        showVoucher: true
       },
       50: {
-        badge: 'Yes, je hebt gewonnen',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>50 Club Lions punten</span> gewonnen',
-        text: 'Top! Je hebt 50 Club Lions punten gewonnen in de STG Koningsdagactie.',
-        buttonText: 'Ga naar de STG voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        badge: 'Gefeliciteerd',
+        title: 'Gefeliciteerd<br>Je hebt <span>50 Lion punten</span> gewonnen!',
+        text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
+        buttonText: 'Voucher claimen',
+        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
         rotation: -270,
-        confetti: true
+        confetti: true,
+        showVoucher: true
       },
       100: {
-        badge: 'Geweldig, hoofdprijs',
-        title: 'Gefeliciteerd!<br>Jij hebt <span>100 Club Lions punten</span> gewonnen',
-        text: 'Fantastisch! Je hebt 100 Club Lions punten gewonnen in de STG Koningsdagactie.',
-        buttonText: 'Ga naar de STG voordeelshop',
-        buttonUrl: 'https://ola.touchtickets.nl/nl/catalogue/',
+        badge: 'Gefeliciteerd',
+        title: 'Gefeliciteerd<br>Je hebt <span>20 Lion punten</span> gewonnen!',
+        text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
+        buttonText: 'Voucher claimen',
+        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
         rotation: 0,
-        confetti: true
+        confetti: true,
+        showVoucher: true
       }
     };
 
@@ -154,8 +168,12 @@
         title.innerHTML = current.title;
         text.textContent = current.text;
 
-        voucherCodeBox.textContent = voucherCode || 'Geen code beschikbaar';
-        voucherWrap.classList.remove('ola-spinhero__voucher-box--hidden');
+        if (current.showVoucher) {
+          voucherCodeBox.textContent = voucherCode || 'Geen code beschikbaar';
+          voucherWrap.classList.remove('ola-spinhero__voucher-box--hidden');
+        } else {
+          voucherWrap.classList.add('ola-spinhero__voucher-box--hidden');
+        }
 
         resultButton.textContent = current.buttonText;
         resultButton.href = current.buttonUrl;

@@ -70,7 +70,7 @@
         badge: 'Helaas, net mis!',
         title: 'Helaas, net mis!<br>Deze keer <span>geen Lion punten</span>.',
         text: 'Maar: Blijf Club Lions volgen, er komen snel weer nieuwe acties aan!',
-        buttonText: 'Bekijk acties',
+        buttonText: 'Blijf Club Lions volgen',
         buttonUrl: 'https://www.my-stglions.nl/',
         rotation: -90,
         confetti: false,

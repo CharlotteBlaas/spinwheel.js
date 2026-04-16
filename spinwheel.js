@@ -1,3 +1,4 @@
+<script>
 (function () {
   var attempts = 0;
   var maxAttempts = 20;
@@ -64,7 +65,6 @@
     var voucherCode = cleanVoucherCode(voucherCodeBox.textContent);
     var prizeValue = cleanPrizeValue(prizeValueBox.textContent);
 
-    // 🎯 ENIGE GELDIGE STATES
     var states = {
       0: {
         badge: 'Helaas, net mis!',
@@ -108,7 +108,6 @@
       }
     };
 
-    // ❗ fallback = geen prijs
     var current = states[prizeValue] || states[0];
 
     startButton.addEventListener('click', function () {
@@ -122,7 +121,12 @@
       confettiLayer.innerHTML = '';
 
       var spinDuration = 4200;
-      var finalRotation = (360 * 3) + current.rotation;
+
+      // 🔥 FIX: mobiel offset
+      var isMobile = window.innerWidth <= 920;
+      var rotationOffset = isMobile ? 90 : 0;
+
+      var finalRotation = (360 * 3) + current.rotation + rotationOffset;
 
       setTimeout(function () {
         wheel.style.setProperty('--ola-spinhero-wheel-rotation', finalRotation + 'deg');
@@ -154,3 +158,4 @@
 
   initOlaSpinHero();
 })();
+</script>

@@ -44,21 +44,29 @@
 
     function createConfetti() {
       confettiLayer.innerHTML = '';
-      var colors = ['#d8791f', '#f3b562', '#f7e7ce', '#8f4f24'];
+      var colors = ['#c96b1d', '#8f3f1f', '#efe2cf', '#5e3423']; // zelfde als FR
       var pieces = 140;
 
       for (var i = 0; i < pieces; i++) {
         var piece = document.createElement('span');
         piece.className = 'ola-spinhero__confetti-piece';
 
-        piece.style.left = Math.random() * 100 + 'vw';
-        piece.style.width = (6 + Math.random() * 8) + 'px';
-        piece.style.height = (10 + Math.random() * 14) + 'px';
+        var left = Math.random() * 100;
+        var sizeW = 6 + Math.random() * 8;
+        var sizeH = 10 + Math.random() * 14;
+        var duration = 3.8 + Math.random() * 2.8;
+        var delay = Math.random() * 1.8;
+        var drift = (-120 + Math.random() * 240).toFixed(0) + 'px';
+        var rotate = (Math.random() * 50 - 25).toFixed(0) + 'deg';
+
+        piece.style.left = left + 'vw';
+        piece.style.width = sizeW + 'px';
+        piece.style.height = sizeH + 'px';
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = (3.8 + Math.random() * 2.8) + 's';
-        piece.style.animationDelay = (Math.random() * 1.8) + 's';
-        piece.style.transform = 'rotate(' + (Math.random() * 50 - 25) + 'deg)';
-        piece.style.setProperty('--ola-confetti-x', (-120 + Math.random() * 240) + 'px');
+        piece.style.animationDuration = duration + 's';
+        piece.style.animationDelay = delay + 's';
+        piece.style.transform = 'rotate(' + rotate + ')';
+        piece.style.setProperty('--ola-confetti-x', drift);
 
         confettiLayer.appendChild(piece);
       }
@@ -82,7 +90,7 @@
         title: 'Helaas!<br>Vandaag <span>geen Lion punten</span>.',
         text: 'Vandaag geen Lion punten, maar blijf Club Lion volgen. Er komen regelmatig nieuwe acties en beloningen.',
         buttonText: 'Blijf Club Lion volgen',
-        buttonUrl: 'https://www.my-stglions.be/Content/homepage/',
+        buttonUrl: 'https://www.my-stglions.be/',
         rotation: -90,
         confetti: false,
         showVoucher: false
@@ -132,7 +140,9 @@
       confettiLayer.innerHTML = '';
 
       var spinDuration = 4200;
-      var finalRotation = (360 * 3) + current.rotation;
+      var isMobile = window.innerWidth <= 920;
+      var rotationOffset = isMobile ? 90 : 0;
+      var finalRotation = (360 * 3) + current.rotation + rotationOffset;
 
       setTimeout(function () {
         wheel.style.setProperty('--ola-spinhero-wheel-rotation', finalRotation + 'deg');

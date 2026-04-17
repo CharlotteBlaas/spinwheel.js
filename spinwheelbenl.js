@@ -82,7 +82,7 @@
         title: 'Helaas!<br>Vandaag <span>geen Lion punten</span>.',
         text: 'Vandaag geen Lion punten, maar blijf Club Lion volgen. Er komen regelmatig nieuwe acties en beloningen.',
         buttonText: 'Blijf Club Lion volgen',
-        buttonUrl: 'https://www.my-stglions.nl/',
+        buttonUrl: 'https://www.my-stglions.nl/Content/homepage/',
         rotation: -90,
         confetti: false,
         showVoucher: false
@@ -92,7 +92,7 @@
         title: 'Gefeliciteerd<br>Je hebt <span>10 Lion punten</span> gewonnen!',
         text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
         buttonText: 'Voucher claimen',
-        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
+        buttonUrl: 'https://www.my-stglions.be/Voucher/',
         rotation: 180,
         confetti: true,
         showVoucher: true
@@ -102,7 +102,7 @@
         title: 'Gefeliciteerd<br>Je hebt <span>20 Lion punten</span> gewonnen!',
         text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
         buttonText: 'Voucher claimen',
-        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
+        buttonUrl: 'https://www.my-stglions.be/Voucher/',
         rotation: 0,
         confetti: true,
         showVoucher: true
@@ -112,7 +112,7 @@
         title: 'Gefeliciteerd<br>Je hebt <span>50 Lion punten</span> gewonnen!',
         text: 'Kopieer de code en verzilver ’m bij Voucher claimen. (Deze code is persoonlijk en éénmalig te gebruiken.)',
         buttonText: 'Voucher claimen',
-        buttonUrl: 'https://www.my-stglions.nl/Voucher/',
+        buttonUrl: 'https://www.my-stglions.be/Voucher/',
         rotation: 90,
         confetti: true,
         showVoucher: true

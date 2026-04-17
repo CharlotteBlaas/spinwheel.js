@@ -82,7 +82,7 @@
         title: 'Helaas!<br>Vandaag <span>geen Lion punten</span>.',
         text: 'Vandaag geen Lion punten, maar blijf Club Lion volgen. Er komen regelmatig nieuwe acties en beloningen.',
         buttonText: 'Blijf Club Lion volgen',
-        buttonUrl: 'https://www.my-stglions.nl/Content/homepage/',
+        buttonUrl: 'https://www.my-stglions.be/Content/homepage/',
         rotation: -90,
         confetti: false,
         showVoucher: false

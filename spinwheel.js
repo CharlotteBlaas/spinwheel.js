@@ -44,7 +44,7 @@
 
     function createConfetti() {
       confettiLayer.innerHTML = '';
-      var colors = ['#d8791f', '#f3b562', '#f7e7ce', '#8f4f24'];
+      var colors = ['#FF4B4B', '#FFFFFF', '#21468B', '#FF8C00'];
       var pieces = 140;
 
       for (var i = 0; i < pieces; i++) {
